@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<!-- ########################### Hackathon 2016 ############################# -->
+
+
+<html>
+	<head>
+	<style type="text/css">
+		html,
+		body {
+			height: 100% ;
+			margin: 0px 0px 0px 0px ;
+			overflow: hidden ;
+			padding: 0px 0px 0px 0px ;
+			width: 100% ;
+			}
+		#map-canvas {
+			height: 50% ;
+			width: 50% ;
+			}
+	</style>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false">
+		</script>
+		<script type="text/javascript">
+			var map = null;
+			function showLocation(){
+				if(navigator && navigator.geolocation){
+					//One-shot position request..
+					//navigator.geolocation.getCurrentPosition(callback); //this is currentPosition tracker
+					var watchID = navigator.geolocation.watchPosition(callback, geo_error, geo_options);
+					//var watchID = navigator.geolocation.watchPosition(callback);
+					
+				}else{
+					error('Geolocation is not supported.');
+				}
+				
+			}
+			
+			function geo_error(){
+				alert("Sorry, no position available.");
+			}
+			
+			var geo_options = {
+			  enableHighAccuracy: true, 
+			  maximumAge        : 30000, 
+			  timeout           : 27000
+			};
+			
+			function callback(position){
+				var latitude = position.coords.latitude;
+				var longitude = position.coords.longitude;
+				
+				document.getElementById('latitude').innerHTML = latitude;
+				document.getElementById('longitude').innerHTML = longitude;
+				
+				var latLong = new google.maps.LatLng(latitude, longitude);
+				var marker = new google.maps.Marker({
+				    position: latLong
+				});      				
+
+				marker.setMap(map);
+		      	map.setZoom(8);
+		      	map.setCenter(marker.getPosition());
+		      	
+		      	//navigator.geolocation.clearWatch(watchID);
+			}
+			
+			google.maps.event.addDomListener(window, 'load', initMap); 
+			
+			function initMap() {
+		        var mapOptions = {
+		          center: new google.maps.LatLng(0, 0),
+		          zoom: 1,
+		          mapTypeId: google.maps.MapTypeId.ROADMAP
+		        };
+		        map = new google.maps.Map(document.getElementById("map-canvas"), 
+		                                          mapOptions);
+		      }
+			
+		</script>
+	</head>
+	<body>
+		
+		<input type="button" value="Show Location" onclick="showLocation()">
+		<br>
+		Latitude : <span id="latitude"></span> <br>
+		Longitude : <span id="longitude"></span> <br>
+		<br>
+		<div id="map-canvas"></div>
+	</body>
+</html>

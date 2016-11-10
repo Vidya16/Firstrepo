@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<HTML>
+<BODY> 
+CLICK SHOW BUTTON
+<input type="button" value="Show Location"onclick="showlocation()"/> 
+ 
+<br/>
+Latitude: <span id="latitude">..</span> <br>
+Longitude: <span id="longitude">..</span>
+ 
+<SCRIPT>
+function showlocation(){
+navigator.geolocation.watchPosition(callback);
+}
+function callback(position){
+document.getElementById('latitude').innerHTML=position.coords.latitude;
+document.getElementById('longitude').innerHTML=position.coords.longitude;
+}
+</SCRIPT>
+</HTML>
